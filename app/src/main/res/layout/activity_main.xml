@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_main"
@@ -17,120 +16,85 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-1dp" />
 
-   <!-- <fragment android:id="@+id/autocomplete_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />-->
-
-    <Button
-        android:id="@+id/button_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="menu"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-      />
-
     <Button
         android:id="@+id/button_1km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintCircle="@id/button_menu"
-        app:layout_constraintCircleRadius="90dp"
-        app:layout_constraintCircleAngle="1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/km_button"
         android:text="1km"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintCircleAngle="1"
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/button_2km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/km_button3"
         android:text="2km"
-        app:layout_constraintCircle="@id/button_menu"
-        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintBottom_toTopOf="@id/button_1km"
         app:layout_constraintCircleAngle="56"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/button_3km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/km_button2"
         android:text="3km"
-        app:layout_constraintCircle="@id/button_menu"
-        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintBottom_toTopOf="@id/button_2km"
         app:layout_constraintCircleAngle="90"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-    <!--    <Button
-            android:id="@+id/clear_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="초기화"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />-->
-<!--
-    <fragment
-        android:id="@+id/autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="5"
-        tools:layout_editor_absoluteX="88dp"
-        tools:layout_editor_absoluteY="39dp" />-->
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="55dp"
+        android:background="@drawable/circular_edit_text"
         android:ems="10"
         android:gravity="left|center"
-        android:singleLine="true"
+        android:hint="목적지를 입력하세요"
         android:imeOptions="actionSearch"
         android:maxLength="20"
-        android:background="@drawable/circular_edit_text"
+        android:singleLine="true"
         android:textSize="16sp"
-        android:hint="목적지를 입력하세요"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-      />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/search_icon_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="9dp"
         android:background="@android:color/transparent"
         android:src="@drawable/search_btn"
         app:layout_constraintBottom_toBottomOf="@+id/editText"
-        app:layout_constraintRight_toRightOf="@+id/editText"
-        android:layout_marginEnd="20dp"
-        />
-    
+        app:layout_constraintRight_toRightOf="@+id/editText" />
+
     <ImageView
         android:id="@+id/mask_stock_img"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:src="@drawable/mask_stock"
         android:layout_marginRight="6dp"
         android:layout_marginBottom="4dp"
+        android:src="@drawable/maskstock"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

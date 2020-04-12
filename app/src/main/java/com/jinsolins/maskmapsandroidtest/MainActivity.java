@@ -5,10 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -49,11 +47,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.jinsolins.maskmapsandroidtest.api.ApiClient;
@@ -63,7 +59,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,8 +105,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
 
     private View mLayout;   // Snackbar 사용하기 위한 View
 
-    private TextView txtSelectedPlaceName;
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,28 +131,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(MainActivity.this);
-
-        // 주소 자동완성
-        /*AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        assert autocompleteFragment != null;
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                searchBtn.callOnClick();
-
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-            }
-
-            @Override
-            public void onError(Status status) {
-
-                Log.i(TAG, "ERR: " + status);
-            }
-        });*/
 
         // 내 위치 반경 nkm 검색 버튼
         Button button1km = findViewById(R.id.button_1km);
@@ -245,15 +216,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                 drawMaskMarkers(1);
             }
         });
-
-        // 초기화 버튼
-       /* Button clearButton = findViewById(R.id.clear_button);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeMarkerAll();
-            }
-        });*/
     }
 
     // 버튼 클릭 이벤트
@@ -291,6 +253,23 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         Log.d(TAG, "onMapReady :");
 
         mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                currentPosition = latLng;
+                drawMaskMarkers(1);
+
+                if (currentMarker != null) currentMarker.remove();
+
+                currentMarker = mMap.addMarker(new MarkerOptions().position(currentPosition)
+                        .title("")
+                        .snippet(""));
+
+                stopLocationUpdates();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+            }
+        });
+
         mMap.setOnCameraIdleListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnCameraMoveStartedListener(this);
@@ -327,8 +306,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
             }
         }
 
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+  //      mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
@@ -439,7 +417,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
             return "조회된 주소가 없습니다";
         } else {
             Address address = addresses.get(0);
-            return address.getAddressLine(0).toString();
+            return address.getAddressLine(0);
         }
     }
 
@@ -457,6 +435,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
     }
 
+    // 기본 위치 설정
     public void setDefaultLocation() {
 
         LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
@@ -589,6 +568,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         }
     }
 
+    // Refrofit을 사용한 마스크 정보 표시
     private void getMaskInfo(int m) {
 
         ApiClient.getApiService().test(currentPosition.latitude, currentPosition.longitude, m).enqueue(new Callback<StoreResponse>() {
@@ -607,6 +587,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         apiRequestCount = 0;
     }
 
+    // 마커 생성
     private void drawMarker() {
         if (corona_list == null) {
             Toast.makeText(this, "데이터가 존재하지 않습니다", Toast.LENGTH_LONG).show();
@@ -623,13 +604,12 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                     .title(item.getName())
                     .snippet(item.getAddress() + "@" + item.getCreatedAt() + "@" + item.getRemainStat() + "@" + item.getStockAt() + "@" + item.getType()));
 
-            marker.showInfoWindow();
             if (item.getRemainStat() == null || item.getRemainStat().equals("empty") || item.getRemainStat().equals("break")) {
-                marker.setIcon((getMarkerIcon("#f9f906")));
+                marker.setIcon(newMaskMarker(R.drawable.marker_gray2));
             } else if (item.getRemainStat().equals("plenty")) {
-                marker.setIcon(getMarkerIcon("#336600"));
+                marker.setIcon(newMaskMarker(R.drawable.marker_green));
             } else if (item.getRemainStat().equals("some")) {
-                marker.setIcon(getMarkerIcon("#ff8c1a"));
+                marker.setIcon(newMaskMarker(R.drawable.marker_orange));
             } else if (item.getRemainStat().equals("few")) {
                 marker.setIcon(newMaskMarker(R.drawable.marker_red));
             }
@@ -646,14 +626,8 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
 
         return BitmapDescriptorFactory.fromBitmap(newMarker);
     }
-    // 마커 색상 지정
-    public BitmapDescriptor getMarkerIcon(String color) {
-        float[] hsv = new float[3];
-        Color.colorToHSV(Color.parseColor(color), hsv);
-        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
-    }
 
-    @Override
+     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("onMarkerClick", "click");
 
@@ -686,14 +660,16 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                 remain_stat = "판매 중지";
             }
         }
-        Toast.makeText(getApplicationContext(),
-                name + "\n"
-                        + "\n재고 상태: " + remain_stat
-                        + "\n" + addr
-                        + "\n\n입고등록 시간: " + stock_at
-                        + "\n업데이트 시간: " + created_at
-                , Toast.LENGTH_LONG * 500).show();
 
+        String massage = "재고 상태: " + remain_stat
+                + "\n\n" + addr
+                + "\n\n입고등록 시간: " + stock_at
+                + "\n업데이트 시간: " + created_at;
+
+         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+         alertDialog.setTitle(name);
+         alertDialog.setMessage(massage);
+         alertDialog.show();
         return true;
     }
 
@@ -701,5 +677,4 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
     public void onCameraMoveStarted(int i) {
         // mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
-
 }

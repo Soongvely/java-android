@@ -9,20 +9,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static long REQUEST_TIMEOUT = 60;
-    private static String baseURL = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/";
-    private static Retrofit retrofit;
+    private static String maskBaseURL = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/";
+    private static Retrofit maskRetrofit;
 
-    public static Retrofit getRetrofit() {
-
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseURL)
+    public static Retrofit getMaskRetrofit() {
+        if (maskRetrofit == null) {
+            maskRetrofit = new Retrofit.Builder()
+                    .baseUrl(maskBaseURL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getHttpLogClient())
                     .build();
         }
-
-        return retrofit;
+        return maskRetrofit;
     }
 
     private static OkHttpClient getHttpLogClient() {
@@ -35,6 +33,6 @@ public class ApiClient {
     }
 
     public static ApiService getApiService() {
-        return getRetrofit().create(ApiService.class);
+        return getMaskRetrofit().create(ApiService.class);
     }
 }
