@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Mask Maps Android Test</string>
+    <string name="enter_the_address">Enter the Address.</string>
+    <string name="search">Search</string>
+    <string name="edittextroundedborder">EditTextRoundedBorder</string>
+    <string name="_1km">1km</string>
 </resources>

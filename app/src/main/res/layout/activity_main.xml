@@ -1,29 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_main"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
 
     <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/map"
         tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-1dp" />
+
+   <!-- <fragment android:id="@+id/autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        />-->
 
     <Button
-        android:text="주소검색"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:id="@+id/search_button"/>
+        android:id="@+id/button_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+      />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <Button
+        android:id="@+id/button_1km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintCircle="@id/button_menu"
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintCircleAngle="1"
+        android:text="1km"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button_2km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2km"
+        app:layout_constraintCircle="@id/button_menu"
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintCircleAngle="56"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/button_3km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="3km"
+        app:layout_constraintCircle="@id/button_menu"
+        app:layout_constraintCircleRadius="90dp"
+        app:layout_constraintCircleAngle="90"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!--    <Button
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="초기화"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />-->
+<!--
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:layout_margin="10dp"
+        android:layout_weight="5"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="39dp" />-->
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginLeft="20dp"
+        android:ems="10"
+        android:gravity="left|center"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:maxLength="20"
+        android:background="@drawable/circular_edit_text"
+        android:textSize="16sp"
+        android:hint="목적지를 입력하세요"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageButton
+        android:id="@+id/search_icon_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="9dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/search_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintRight_toRightOf="@+id/editText"
+        android:layout_marginEnd="20dp"
+        />
+    
+    <ImageView
+        android:id="@+id/mask_stock_img"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/mask_stock"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
