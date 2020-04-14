@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -218,7 +217,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         });
     }
 
-    // 버튼 클릭 이벤트
+    // 반경 거리 버튼 클릭 이벤트
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -234,6 +233,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         }
     }
 
+    // 반경 거리에 따른 마커 생성
     private void drawMaskMarkers(int type) {
 
         float zoomLevel = type == 1 ? 14.5f : type == 2 ? 14f : 13.5f;
@@ -511,6 +511,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                 }
             }
         }
+        stopLocationUpdates();
     }
 
     /**************************** GPS 활성화를 위한 메소드 ***************************/
@@ -568,7 +569,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         }
     }
 
-    // Refrofit을 사용한 마스크 정보 표시
+    // Retrofit 을 사용한 마스크 정보 표시
     private void getMaskInfo(int m) {
 
         ApiClient.getApiService().test(currentPosition.latitude, currentPosition.longitude, m).enqueue(new Callback<StoreResponse>() {
@@ -627,6 +628,7 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
         return BitmapDescriptorFactory.fromBitmap(newMarker);
     }
 
+    // 마커 클릭 이벤트 및 알림창 생성
      @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("onMarkerClick", "click");
