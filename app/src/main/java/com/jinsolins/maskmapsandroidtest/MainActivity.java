@@ -465,7 +465,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
     }
 
     // ActivityConpat.requestPermissions 를 사용한 퍼미션 요청의 결과를 리턴받는 메소드
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -515,7 +514,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
     }
 
     /**************************** GPS 활성화를 위한 메소드 ***************************/
-
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -584,7 +582,6 @@ public class MainActivity<ActivityMapCoronaBinding> extends AppCompatActivity
                 Log.e("ERR", t.getMessage());
             }
         });
-
         apiRequestCount = 0;
     }
 
